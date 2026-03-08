@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Xero Auth - OC Analysis</title>
+<style>body{font-family:Inter,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f4f2f1;margin:0}
+.card{background:#fff;border-radius:12px;padding:40px;max-width:600px;box-shadow:0 4px 12px rgba(0,0,0,0.1);text-align:center}
+h1{color:#0d0c2c;margin-bottom:8px}p{color:#666;margin:8px 0}
+.code{background:#f0f0f0;padding:12px;border-radius:8px;font-family:monospace;font-size:13px;word-break:break-all;margin:16px 0;text-align:left}
+.btn{background:#3bc7f4;color:#0d0c2c;border:none;padding:12px 24px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px}
+.btn:hover{opacity:0.9}.error{color:#c00}</style></head>
+<body><div class="card" id="card">
+<h1>🔗 Xero Authorization</h1>
+<p id="status">Processing...</p>
+<div id="content"></div>
+</div>
+<script>
+const params = new URLSearchParams(window.location.search);
+const code = params.get('code');
+const error = params.get('error');
+if (error) {
+  document.getElementById('status').innerHTML = '<span class="error">❌ Authorization failed</span>';
+  document.getElementById('content').innerHTML = '<p>' + error + '</p>';
+} else if (code) {
+  document.getElementById('status').innerHTML = '✅ Authorization successful!';
+  document.getElementById('content').innerHTML = 
+    '<p>Copy this code and paste it to Clawdia:</p>' +
+    '<div class="code" id="code">' + code + '</div>' +
+    '<button class="btn" onclick="navigator.clipboard.writeText(document.getElementById(\'code\').innerText);this.innerText=\'Copied!\'">Copy Code</button>';
+} else {
+  document.getElementById('status').innerHTML = '⏳ Waiting for authorization...';
+  document.getElementById('content').innerHTML = '<p>You should be redirected here after authorizing with Xero.</p>';
+}
+</script></body></html>
