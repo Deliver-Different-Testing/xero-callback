@@ -56,11 +56,11 @@ tfoot td:first-child,tfoot td:nth-child(2){text-align:left}
 <div class="controls">
 <input type="text" id="search" placeholder="🔍 Search client..." oninput="filterTable()">
 <select id="minRev" onchange="filterTable()">
-<option value="0">All clients</option>
+<option value="0" selected>All clients</option>
 <option value="1000">Revenue &gt; $1,000</option>
 <option value="5000">Revenue &gt; $5,000</option>
 <option value="10000">Revenue &gt; $10,000</option>
-<option value="50000" selected>Revenue &gt; $50,000</option>
+<option value="50000">Revenue &gt; $50,000</option>
 <option value="100000">Revenue &gt; $100,000</option>
 </select>
 <button class="filter-btn" id="flagBtn" onclick="toggleFlags()">🚩 Flagged Only</button>
