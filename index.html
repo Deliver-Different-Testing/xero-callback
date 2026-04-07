@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xero Connection</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f5f7;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.1);padding:40px;max-width:500px;width:100%;text-align:center}
+h1{font-size:24px;margin-bottom:8px;color:#1a1a2e}
+.sub{color:#666;margin-bottom:24px}
+.code-box{background:#f0f4f8;border:1px solid #d0d7de;border-radius:8px;padding:16px;font-family:monospace;font-size:14px;word-break:break-all;margin:16px 0;text-align:left}
+.success{color:#0d9488;font-weight:600;font-size:18px}
+.error{color:#dc2626;font-weight:600}
+.btn{display:inline-block;background:#13B5EA;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:16px;margin-top:16px}
+.btn:hover{background:#0e94c0}
+.spinner{border:3px solid #e5e7eb;border-top:3px solid #13B5EA;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;margin:20px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="card">
+<div id="loading">
+<h1>🔗 Connecting to Xero...</h1>
+<div class="spinner"></div>
+<p class="sub">Processing authorization...</p>
+</div>
+<div id="success" class="hide">
+<h1>✅ Connected!</h1>
+<p class="success">Xero authorization successful</p>
+<p class="sub" style="margin-top:12px">Auth code received. Copy this code and send it back:</p>
+<div class="code-box" id="authCode"></div>
+<p class="sub" style="font-size:13px;margin-top:12px">You can close this tab now.</p>
+</div>
+<div id="error" class="hide">
+<h1>❌ Connection Failed</h1>
+<p class="error" id="errorMsg"></p>
+</div>
+<div id="start" class="hide">
+<h1>🔗 Connect to Xero</h1>
+<p class="sub">Click below to authorize access to your Xero organisation</p>
+<a class="btn" id="authLink" href="#">Connect Xero →</a>
+</div>
+</div>
+<script>
+const CLIENT_ID = '7C8B489B95024CA0A3083272DBF92D5A';
+const REDIRECT = 'https://deliver-different-testing.github.io/xero-callback/';
+const SCOPES = 'openid profile email accounting.transactions.read accounting.reports.read accounting.contacts.read accounting.settings.read';
+
+const params = new URLSearchParams(window.location.search);
+const code = params.get('code');
+const error = params.get('error');
+
+if (code) {
+  document.getElementById('loading').classList.add('hide');
+  document.getElementById('success').classList.remove('hide');
+  document.getElementById('authCode').textContent = code;
+} else if (error) {
+  document.getElementById('loading').classList.add('hide');
+  document.getElementById('error').classList.remove('hide');
+  document.getElementById('errorMsg').textContent = error + ': ' + (params.get('error_description') || 'Unknown error');
+} else {
+  document.getElementById('loading').classList.add('hide');
+  document.getElementById('start').classList.remove('hide');
+  const authUrl = 'https://login.xero.com/identity/connect/authorize?' + new URLSearchParams({
+    response_type: 'code',
+    client_id: CLIENT_ID,
+    redirect_uri: REDIRECT,
+    scope: SCOPES,
+    state: 'urgentcool'
+  }).toString();
+  document.getElementById('authLink').href = authUrl;
+}
+</script>
+</body>
+</html>
