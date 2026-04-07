@@ -38,6 +38,12 @@ tfoot td:first-child,tfoot td:nth-child(2){text-align:left}
 .export-btn:hover{background:#2563eb}
 .filter-btn{background:#334155;color:#e2e8f0;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px}
 .filter-btn.active{background:#dc2626;color:#fff}
+
+.gf-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.gf-badge.yes{background:#065f46;color:#6ee7b7}
+.gf-badge.no{color:#475569}
+tr.gf-yes td{background:rgba(6,95,70,0.15)}
+tr.gf-yes:hover td{background:rgba(6,95,70,0.25)}
 </style>
 </head>
 <body>
@@ -45,7 +51,11 @@ tfoot td:first-child,tfoot td:nth-child(2){text-align:left}
 <p class="subtitle">April 2025 – February 2026 · 79 active customers · Client names anonymised · Source: Xero (invoices less credit notes, ex-GST)</p>
 <div class="note">⚠️ One food service client: Rent ($21,312/mo) and power on-charges excluded — showing transport revenue only ($95,762 vs $333,570 gross)</div>
 
-<div class="kpi-row">
+<div style="display:flex;gap:8px;margin-bottom:16px">
+<button class="tab-btn active" onclick="showTab('revenue')" id="tab-revenue" style="background:#3b82f6;color:#fff;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600">📊 Revenue</button>
+<button class="tab-btn" onclick="showTab('fleet')" id="tab-fleet" style="background:#334155;color:#e2e8f0;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600">🚛 Fleet</button>
+</div>
+<div id="revenue-section"><div class="kpi-row">
 <div class="kpi"><div class="label">Transport Revenue</div><div class="value green">$4,390,728</div></div>
 <div class="kpi"><div class="label">Invoices</div><div class="value">1,419</div></div>
 <div class="kpi"><div class="label">Credit Notes</div><div class="value">100</div></div>
@@ -180,7 +190,169 @@ tfoot td:first-child,tfoot td:nth-child(2){text-align:left}
 <tfoot><tr><td></td><td>TOTAL</td><td>$365,858</td><td>$408,007</td><td>$371,599</td><td>$416,220</td><td>$423,194</td><td>$417,889</td><td>$421,580</td><td>$388,596</td><td>$396,024</td><td>$390,724</td><td>$391,037</td><td>$4,390,728</td></tr></tfoot>
 </table></div>
 
+</div>
+<div id="fleet-section" style="display:none">
+<div class="kpi-row">
+<div class="kpi"><div class="label">Total Fleet Book Value</div><div class="value green">$2,179,032</div></div>
+<div class="kpi"><div class="label">Power Units</div><div class="value">17</div></div>
+<div class="kpi"><div class="label">Trailers</div><div class="value">10</div></div>
+<div class="kpi"><div class="label">Prior Buyer Interest</div><div class="value">$1,857,151</div></div>
+<div class="kpi"><div class="label">Units of Interest</div><div class="value">19</div></div>
+</div>
+
+<div class="note">💡 "Prior Interest" indicates assets a previous prospective buyer expressed acquisition interest in. Book values as at February 2026.</div>
+
+<h2 style="color:#fff;font-size:16px;margin:20px 0 10px">Power Units (17)</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Year</th><th>Make/Model</th><th>Type</th><th>KM</th><th>Book Value</th><th>Refrigeration</th><th>Fridge Model</th><th>Engine Hrs</th><th>Total Hrs</th><th>Prior Interest</th></tr></thead>
+<tbody><tr class="">
+<td>1</td><td>2019</td><td>Hyundai Xcient</td><td>6x4 Tractor</td>
+<td>345,000</td><td>$58,623</td><td>N/A</td><td></td>
+<td><span style="color:#475569">N/A</span></td><td><span style="color:#475569">—</span></td><td><span class="gf-badge no">—</span></td></tr>
+<tr class="">
+<td>2</td><td>2014</td><td>DAF CF</td><td>6 Wheeler Hardsider</td>
+<td>445,000</td><td>$51,860</td><td>Carrier dual zone</td><td>Carrier Supra 1250MT</td>
+<td><span style="color:#475569">—</span></td><td>15,338</td><td><span class="gf-badge no">—</span></td></tr>
+<tr class="">
+<td>3</td><td>2013</td><td>Mitsubishi Fuso 470</td><td>14P Curtainsider</td>
+<td>1,210,000</td><td>$43,059</td><td>Thermoking</td><td>T1000</td>
+<td><span style="color:#475569">—</span></td><td>7,083</td><td><span class="gf-badge no">—</span></td></tr>
+<tr class="gf-yes">
+<td>4</td><td>2021</td><td>Scania R620</td><td>8x4 14P Curtainsider</td>
+<td>580,000</td><td>$157,469</td><td>Thermoking</td><td>T1000</td>
+<td>1,405</td><td>1,412</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>5</td><td>2014</td><td>Volvo FM</td><td>8x4 16P Curtainsider</td>
+<td>1,360,000</td><td>$61,815</td><td>Thermoking</td><td>T1080</td>
+<td>6,284</td><td>28,676</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>6</td><td>2020</td><td>MAN TGX</td><td>8x4 14P Curtainsider</td>
+<td>740,000</td><td>$97,175</td><td>Thermoking</td><td>T1000</td>
+<td>4,741</td><td>7,846</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>7</td><td>2016</td><td>Mercedes Actros</td><td>6x4 Tractor 600hp</td>
+<td>560,000</td><td>$83,104</td><td>N/A</td><td></td>
+<td><span style="color:#475569">N/A</span></td><td><span style="color:#475569">—</span></td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>8</td><td>2022</td><td>MAN TGX</td><td>8x4 14P Curtainsider</td>
+<td>620,000</td><td>$146,610</td><td>Thermoking</td><td>T1000</td>
+<td><span style="color:#475569">—</span></td><td>4,342</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="">
+<td>9</td><td>2015</td><td>Isuzu F Series</td><td>6x4 14P Curtainsider</td>
+<td>425,000</td><td>$37,830</td><td>Zanotti</td><td>Uno 120 (2020)</td>
+<td><span style="color:#475569">—</span></td><td>2,146</td><td><span class="gf-badge no">—</span></td></tr>
+<tr class="gf-yes">
+<td>10</td><td>2023</td><td>Fuso Shogun</td><td>8x4 14P Curtainsider</td>
+<td>170,000</td><td>$189,618</td><td>Thermoking</td><td>T1000</td>
+<td>883</td><td>1,382</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="">
+<td>11</td><td>2010</td><td>Hino FD</td><td>10P 4 Wheeler</td>
+<td>725,000</td><td>$24,892</td><td>No fridge</td><td></td>
+<td><span style="color:#475569">—</span></td><td><span style="color:#475569">—</span></td><td><span class="gf-badge no">—</span></td></tr>
+<tr class="">
+<td>12</td><td>2020</td><td>Fuso Fighter</td><td>6x4 14P Hardsider</td>
+<td>115,000</td><td>$62,217</td><td>Thermoking</td><td>T1200R</td>
+<td>1,915</td><td>2,060</td><td><span class="gf-badge no">—</span></td></tr>
+<tr class="gf-yes">
+<td>13</td><td>2018</td><td>Isuzu C Series</td><td>8x4 14P Curtainsider</td>
+<td>645,000</td><td>$64,430</td><td>Thermoking</td><td>TS500</td>
+<td><span style="color:#475569">—</span></td><td>7,949</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>14</td><td>2022</td><td>MAN TGX</td><td>8x4 Tractor 540hp</td>
+<td>640,000</td><td>$187,687</td><td>N/A</td><td></td>
+<td><span style="color:#475569">N/A</span></td><td><span style="color:#475569">—</span></td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>15</td><td>2020</td><td>MAN TGX</td><td>6x4 Tractor 540hp</td>
+<td>870,000</td><td>$124,937</td><td>N/A</td><td></td>
+<td><span style="color:#475569">N/A</span></td><td><span style="color:#475569">—</span></td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>16</td><td>2016</td><td>Isuzu C Series</td><td>8x4 14P Curtainsider</td>
+<td>840,000</td><td>$37,086</td><td>Thermoking</td><td>T1080</td>
+<td>3,386</td><td>3,534</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>17</td><td>2022</td><td>Fuso Fighter</td><td>6x4 14P Curtainsider</td>
+<td>125,000</td><td>$81,269</td><td>Thermoking</td><td>T1000</td>
+<td>779</td><td>946</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+</tbody>
+<tfoot><tr><td></td><td colspan="4">TOTAL — Power Units</td><td>$1,509,681</td><td colspan="5">Interest: $1,231,200 (11 units)</td></tr></tfoot>
+</table></div>
+
+<h2 style="color:#fff;font-size:16px;margin:20px 0 10px">Trailers (10)</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Year</th><th>Make</th><th>Type</th><th>Capacity</th><th>Book Value</th><th>Refrigeration</th><th>Fridge Model</th><th>Engine Hrs</th><th>Total Hrs</th><th>Prior Interest</th></tr></thead>
+<tbody><tr class="">
+<td>1</td><td>2003</td><td>Roadmaster SG</td><td>B-Train 5-Axle Curtainsider</td>
+<td>28P</td><td>$8,595</td><td>Thermoking/Zanotti</td><td></td>
+<td><span style="color:#475569">—</span></td><td><span style="color:#475569">—</span></td><td><span class="gf-badge no">—</span></td></tr>
+<tr class="gf-yes">
+<td>2</td><td>2003</td><td>Roadmaster SG</td><td>B-Train 6-Axle Curtainsider</td>
+<td>34P</td><td>$69,675</td><td>Carrier</td><td>Maxima 1200/Supra 850</td>
+<td><span style="color:#475569">—</span></td><td>12093/11553</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>3</td><td>2013</td><td>Fruehauf RBC</td><td>5-Axle Curtainsider</td>
+<td>22P</td><td>$38,373</td><td>Thermoking</td><td>SL200e</td>
+<td>7,277</td><td>12,249</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>4</td><td>2020</td><td>Roadmaster FG</td><td>5-Axle Curtainsider</td>
+<td>22P</td><td>$94,599</td><td>Thermoking</td><td>SLX300</td>
+<td>3,558</td><td>4,437</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>5</td><td>2011</td><td>Domett D2001</td><td>4-Axle Curtainsider</td>
+<td>20P</td><td>$45,246</td><td>Thermoking</td><td>SLX300</td>
+<td>7,472</td><td>9,199</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>6</td><td>2022</td><td>Fruehauf FBR</td><td>4-Axle Hardsider Swap</td>
+<td>30P</td><td>$156,371</td><td>Thermoking</td><td>SLX Spectrum</td>
+<td>5,121</td><td>12,832</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>7</td><td>2022</td><td>Fruehauf FBR</td><td>4-Axle Hardsider Swap</td>
+<td>30P</td><td>$156,371</td><td>Thermoking</td><td>SLX Spectrum</td>
+<td>5,600</td><td>12,843</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="">
+<td>8</td><td>2005</td><td>Roadmaster FG</td><td>4-Axle Curtainsider</td>
+<td>16P</td><td>$3,654</td><td>None</td><td></td>
+<td><span style="color:#475569">—</span></td><td><span style="color:#475569">—</span></td><td><span class="gf-badge no">—</span></td></tr>
+<tr class="gf-yes">
+<td>9</td><td>2011</td><td>Maxicube</td><td>5-Axle Hardsider</td>
+<td>16P</td><td>$36,095</td><td>Carrier</td><td>SLX300</td>
+<td><span style="color:#475569">—</span></td><td>8,372</td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+<tr class="gf-yes">
+<td>10</td><td>2009</td><td>Fruehauf RBC</td><td>4-Axle Curtainsider</td>
+<td>16P</td><td>$29,221</td><td>None</td><td></td>
+<td><span style="color:#475569">—</span></td><td><span style="color:#475569">—</span></td><td><span class="gf-badge yes">✓ Interest</span></td></tr>
+</tbody>
+<tfoot><tr><td></td><td colspan="4">TOTAL — Trailers</td><td>$638,200</td><td colspan="5">Interest: $625,951 (8 units)</td></tr></tfoot>
+</table></div>
+
+<h2 style="color:#fff;font-size:16px;margin:20px 0 10px">Support Vehicles (4)</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Year</th><th>Make</th><th>Type</th><th>KM</th><th>Book Value</th><th colspan="4">Refrigeration</th><th></th></tr></thead>
+<tbody><tr>
+<td>1</td><td>2021</td><td>Mitsubishi Triton</td><td>Ute</td>
+<td>115,000</td><td>$21,046</td><td colspan="4" style="color:#475569">—</td><td></td></tr>
+<tr>
+<td>2</td><td>2012</td><td>Toyota Corolla</td><td>Car</td>
+<td>396,425</td><td>$1,129</td><td colspan="4" style="color:#475569">—</td><td></td></tr>
+<tr>
+<td>3</td><td>2015</td><td>Ford Transit</td><td>Van</td>
+<td>200,450</td><td>$4,456</td><td colspan="4" style="color:#475569">—</td><td></td></tr>
+<tr>
+<td>4</td><td>2025</td><td>Toyota 8FC18</td><td>LPG Forklift</td>
+<td>—</td><td>$4,520</td><td colspan="4" style="color:#475569">—</td><td></td></tr>
+</tbody>
+<tfoot><tr><td></td><td colspan="4">TOTAL — Support</td><td>$31,151</td><td colspan="5"></td></tr></tfoot>
+</table></div>
+</div>
+
 <script>
+
+function showTab(tab) {
+  document.getElementById('revenue-section').style.display = tab === 'revenue' ? 'block' : 'none';
+  document.getElementById('fleet-section').style.display = tab === 'fleet' ? 'block' : 'none';
+  document.getElementById('tab-revenue').style.background = tab === 'revenue' ? '#3b82f6' : '#334155';
+  document.getElementById('tab-fleet').style.background = tab === 'fleet' ? '#3b82f6' : '#334155';
+}
+
 let flagsOnly = false;
 
 function filterTable() {
