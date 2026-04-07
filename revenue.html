@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Urgent Cool - Revenue by Client</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;padding:20px}
+h1{font-size:22px;margin-bottom:4px;color:#fff}
+.subtitle{color:#94a3b8;margin-bottom:20px;font-size:14px}
+.controls{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.controls input,.controls select{background:#1e293b;border:1px solid #334155;color:#e2e8f0;padding:8px 12px;border-radius:6px;font-size:14px}
+.controls input::placeholder{color:#64748b}
+.controls label{color:#94a3b8;font-size:13px}
+.kpi-row{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.kpi{background:#1e293b;border-radius:8px;padding:16px 20px;flex:1;min-width:150px}
+.kpi .label{color:#94a3b8;font-size:12px;text-transform:uppercase;letter-spacing:0.5px}
+.kpi .value{font-size:24px;font-weight:700;color:#fff;margin-top:4px}
+.kpi .value.green{color:#34d399}
+.table-wrap{overflow-x:auto;border-radius:8px;border:1px solid #1e293b}
+table{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap}
+thead th{background:#1e293b;color:#94a3b8;padding:10px 12px;text-align:right;position:sticky;top:0;font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:0.5px}
+thead th:first-child{text-align:left}
+thead th:last-child{color:#f59e0b}
+tbody td{padding:8px 12px;text-align:right;border-bottom:1px solid #1e293b}
+tbody td:first-child{text-align:left;color:#fff;font-weight:500;max-width:250px;overflow:hidden;text-overflow:ellipsis}
+tbody tr:hover{background:#1e293b}
+tbody tr.hidden{display:none}
+tfoot td{padding:10px 12px;text-align:right;font-weight:700;background:#1e293b;color:#f59e0b;border-top:2px solid #334155}
+tfoot td:first-child{text-align:left}
+.neg{color:#f87171}
+.bar-cell{position:relative}
+.bar-bg{position:absolute;left:0;top:0;bottom:0;background:rgba(52,211,153,0.1);border-radius:0 4px 4px 0}
+.export-btn{background:#3b82f6;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600}
+.export-btn:hover{background:#2563eb}
+</style>
+</head>
+<body>
+<h1>Urgent Cool Logistics — Revenue by Client</h1>
+<p class="subtitle">April 2025 – February 2026 · 111 clients · Source: Xero (invoices less credit notes, ex-GST)</p>
+
+<div class="kpi-row">
+<div class="kpi"><div class="label">Grand Total</div><div class="value green">4804762.67</div></div>
+<div class="kpi"><div class="label">Invoices</div><div class="value">1,419</div></div>
+<div class="kpi"><div class="label">Credit Notes</div><div class="value">100</div></div>
+<div class="kpi"><div class="label">Avg Monthly</div><div class="value">436796.6063636364</div></div>
+<div class="kpi"><div class="label">Clients</div><div class="value">111</div></div>
+</div>
+
+<div class="controls">
+<input type="text" id="search" placeholder="🔍 Search client..." oninput="filterTable()">
+<select id="minRev" onchange="filterTable()">
+<option value="0">All clients</option>
+<option value="1000">Revenue > $1,000</option>
+<option value="5000">Revenue > $5,000</option>
+<option value="10000">Revenue > $10,000</option>
+<option value="50000" selected>Revenue > $50,000</option>
+<option value="100000">Revenue > $100,000</option>
+</select>
+<button class="export-btn" onclick="exportCSV()">📥 Export CSV</button>
+</div>
+
+<div class="table-wrap">
+<table id="revTable">
+<thead><tr>
+<th>#</th>
+<th>Client</th>
+<th>Apr 25</th>
+<th>May 25</th>
+<th>Jun 25</th>
+<th>Jul 25</th>
+<th>Aug 25</th>
+<th>Sep 25</th>
+<th>Oct 25</th>
+<th>Nov 25</th>
+<th>Dec 25</th>
+<th>Jan 26</th>
+<th>Feb 26</th>
+<th>TOTAL</th>
+</tr></thead>
+<tbody>
+<tr data-total="838353.42"><td>1</td><td>MORGAN LAURENSON</td><td>$68,858</td><td>$82,674</td><td>$78,554</td><td>$88,469</td><td>$85,115</td><td>$92,574</td><td>$80,784</td><td>$67,546</td><td>$65,677</td><td>$65,540</td><td>$62,561</td><td><strong>$838,353</strong></td></tr>
+<tr data-total="741952.39"><td>2</td><td>MARKET GARDENERS LTD</td><td>$75,475</td><td>$66,381</td><td>$52,876</td><td>$57,075</td><td>$48,571</td><td>$52,620</td><td>$61,115</td><td>$76,153</td><td>$86,082</td><td>$87,969</td><td>$77,636</td><td><strong>$741,952</strong></td></tr>
+<tr data-total="333569.82"><td>3</td><td>Fresh Direct - Palmerston North</td><td>$31,678</td><td>$31,200</td><td>$31,528</td><td>$34,787</td><td>$31,749</td><td>$31,943</td><td>$28,374</td><td>$25,862</td><td>$28,001</td><td>$28,075</td><td>$30,373</td><td><strong>$333,570</strong></td></tr>
+<tr data-total="295140.93"><td>4</td><td>Prepared Produce Auckland</td><td>$30,599</td><td>$27,573</td><td>$26,297</td><td>$26,589</td><td>$26,474</td><td>$28,104</td><td>$27,901</td><td>$26,321</td><td>$25,147</td><td>$24,006</td><td>$26,131</td><td><strong>$295,141</strong></td></tr>
+<tr data-total="278894.16"><td>5</td><td>Urgent Couriers Ltd</td><td>$21,993</td><td>$30,490</td><td>$23,789</td><td>$24,614</td><td>$34,198</td><td>$24,620</td><td>$23,980</td><td>$30,276</td><td>$19,822</td><td>$12,401</td><td>$32,712</td><td><strong>$278,894</strong></td></tr>
+<tr data-total="154550.0"><td>6</td><td>Masterton Pak N Save</td><td>$13,750</td><td>$14,850</td><td>$13,750</td><td>$14,850</td><td>$14,300</td><td>$14,300</td><td>$14,300</td><td>$13,750</td><td>$13,750</td><td>$27,500</td><td class="neg">$-550</td><td><strong>$154,550</strong></td></tr>
+<tr data-total="150023.61"><td>7</td><td>NZ Miracle Water LTD</td><td>$15,212</td><td>$12,503</td><td>$10,160</td><td>$14,666</td><td>$10,334</td><td>$13,792</td><td>$13,792</td><td>$15,113</td><td>$19,588</td><td>$10,893</td><td>$13,970</td><td><strong>$150,024</strong></td></tr>
+<tr data-total="143079.19"><td>8</td><td>LINDSAY TAYLOR TRANSPORT LTD</td><td>$11,431</td><td>$15,385</td><td>$18,706</td><td>$22,431</td><td>$19,612</td><td>$13,536</td><td>$8,001</td><td>$4,174</td><td>$9,369</td><td>$8,297</td><td>$12,138</td><td><strong>$143,079</strong></td></tr>
+<tr data-total="115881.17"><td>9</td><td>NZ National Networks Ltd</td><td>$8,846</td><td>$11,884</td><td>$10,655</td><td>$11,202</td><td>$10,240</td><td>$11,330</td><td>$12,678</td><td>$11,046</td><td>$9,840</td><td>$9,766</td><td>$8,394</td><td><strong>$115,881</strong></td></tr>
+<tr data-total="111552.25"><td>10</td><td>Weatherell Transport Ltd</td><td>$8,643</td><td>$7,105</td><td>$10,376</td><td>$11,653</td><td>$10,937</td><td>$8,763</td><td>$12,999</td><td>$11,353</td><td>$5,893</td><td>$10,561</td><td>$13,272</td><td><strong>$111,552</strong></td></tr>
+<tr data-total="109128.41"><td>11</td><td>GROPAK LTD</td><td>$9,357</td><td>$10,782</td><td>$9,772</td><td>$10,679</td><td>$9,648</td><td>$8,165</td><td>$9,547</td><td>$9,438</td><td>$10,552</td><td>$10,791</td><td>$10,398</td><td><strong>$109,128</strong></td></tr>
+<tr data-total="86119.69"><td>12</td><td>TURNERS & GROWERS FRESH [NP] CC#11342</td><td>$9,207</td><td>$11,630</td><td>$9,579</td><td>$11,340</td><td>$10,776</td><td>$8,811</td><td>$5,839</td><td>$4,108</td><td>$5,155</td><td>$4,593</td><td>$5,081</td><td><strong>$86,120</strong></td></tr>
+<tr data-total="83946.76"><td>13</td><td>Prepared Produce Hastings</td><td style="color:#475569">-</td><td>$10,737</td><td>$8,051</td><td>$10,879</td><td>$10,662</td><td>$8,107</td><td>$8,217</td><td>$5,259</td><td>$6,178</td><td>$10,792</td><td>$5,064</td><td><strong>$83,947</strong></td></tr>
+<tr data-total="81158.16"><td>14</td><td>Foodsfuffs LNIPO</td><td>$18,652</td><td>$17,780</td><td>$22,686</td><td>$22,041</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$81,158</strong></td></tr>
+<tr data-total="73679.18"><td>15</td><td>Produce Express Ltd</td><td>$2,269</td><td>$4,489</td><td>$6,253</td><td>$4,772</td><td>$7,113</td><td>$7,324</td><td>$8,005</td><td>$7,859</td><td>$14,058</td><td>$4,354</td><td>$7,184</td><td><strong>$73,679</strong></td></tr>
+<tr data-total="71994.25"><td>16</td><td>BIDFRESH WELLINGTON</td><td>$6,566</td><td>$6,864</td><td>$5,453</td><td>$6,646</td><td>$5,879</td><td>$7,894</td><td>$6,692</td><td>$7,979</td><td>$6,394</td><td>$5,790</td><td>$5,838</td><td><strong>$71,994</strong></td></tr>
+<tr data-total="62856.0"><td>17</td><td>PAK N SAVE HASTINGS</td><td>$5,332</td><td>$6,269</td><td>$5,208</td><td>$5,484</td><td>$4,568</td><td>$5,714</td><td>$4,744</td><td>$5,874</td><td>$6,236</td><td>$7,417</td><td>$6,010</td><td><strong>$62,856</strong></td></tr>
+<tr data-total="61416.48"><td>18</td><td>SHARPES STOCK FEED LTD</td><td>$693</td><td>$2,035</td><td>$973</td><td>$5,066</td><td>$6,326</td><td>$4,980</td><td>$17,025</td><td>$12,042</td><td>$5,380</td><td>$4,717</td><td>$2,179</td><td><strong>$61,416</strong></td></tr>
+<tr data-total="59939.4"><td>19</td><td>TURNERS & GROWERS HASTINGS CC#11322</td><td>$5,886</td><td>$5,854</td><td>$6,323</td><td>$5,301</td><td>$6,073</td><td>$4,750</td><td>$5,186</td><td>$5,797</td><td>$4,976</td><td>$4,881</td><td>$4,912</td><td><strong>$59,939</strong></td></tr>
+<tr data-total="56685.26"><td>20</td><td>SOMERSET FARMS HAMILTON LTD</td><td>$5,066</td><td>$7,017</td><td>$9,178</td><td>$4,766</td><td>$6,228</td><td>$6,130</td><td>$6,689</td><td>$2,660</td><td>$2,562</td><td>$2,288</td><td>$4,101</td><td><strong>$56,685</strong></td></tr>
+<tr data-total="55426.99"><td>21</td><td>BIDFOOD FSV TAUPO</td><td>$4,490</td><td>$4,764</td><td>$5,321</td><td>$4,719</td><td>$4,204</td><td>$4,684</td><td>$5,110</td><td>$5,125</td><td>$5,685</td><td>$6,013</td><td>$5,312</td><td><strong>$55,427</strong></td></tr>
+<tr data-total="55323.3"><td>22</td><td>PAK N SAVE NAPIER</td><td>$6,650</td><td>$6,499</td><td>$4,728</td><td>$4,016</td><td>$7,561</td><td>$5,985</td><td>$5,048</td><td>$4,411</td><td>$3,535</td><td>$3,436</td><td>$3,453</td><td><strong>$55,323</strong></td></tr>
+<tr data-total="55082.65"><td>23</td><td>United Flower Growers Limited</td><td>$2,834</td><td>$5,533</td><td>$4,760</td><td>$6,178</td><td>$6,601</td><td>$9,839</td><td>$6,391</td><td>$3,804</td><td>$3,222</td><td>$2,513</td><td>$3,408</td><td><strong>$55,083</strong></td></tr>
+<tr data-total="53715.6"><td>24</td><td>TURNERS & GROWERS TRANSPORT PALMERSTON NORTH</td><td>$280</td><td>$265</td><td style="color:#475569">-</td><td>$795</td><td>$9,081</td><td>$8,280</td><td>$8,147</td><td>$5,298</td><td>$5,623</td><td>$5,670</td><td>$10,276</td><td><strong>$53,716</strong></td></tr>
+<tr data-total="52446.58"><td>25</td><td>Jivan Produce</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$6,401</td><td>$7,064</td><td>$10,347</td><td>$13,988</td><td>$8,460</td><td>$6,186</td><td><strong>$52,447</strong></td></tr>
+<tr data-total="46023.47"><td>26</td><td>WILFLORA - M WILSON</td><td>$3,613</td><td>$3,214</td><td>$3,191</td><td>$3,341</td><td>$2,938</td><td>$5,100</td><td>$4,756</td><td>$5,669</td><td>$3,150</td><td>$4,035</td><td>$7,015</td><td><strong>$46,023</strong></td></tr>
+<tr data-total="42388.0"><td>27</td><td>PAK N SAVE NEW PLYMOUTH</td><td>$7,174</td><td>$7,223</td><td>$6,941</td><td>$7,014</td><td>$6,860</td><td>$7,176</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$42,388</strong></td></tr>
+<tr data-total="40373.75"><td>28</td><td>KPH TRANSPORT LTD</td><td>$6,012</td><td>$2,405</td><td>$3,814</td><td>$7,230</td><td>$7,568</td><td>$2,899</td><td>$1,898</td><td>$1,815</td><td>$1,983</td><td>$1,974</td><td>$2,776</td><td><strong>$40,374</strong></td></tr>
+<tr data-total="39408.74"><td>29</td><td>STU YOUNG</td><td>$1,291</td><td>$541</td><td>$579</td><td>$3,732</td><td>$12,908</td><td>$8,268</td><td>$8,553</td><td>$721</td><td>$1,089</td><td>$764</td><td>$964</td><td><strong>$39,409</strong></td></tr>
+<tr data-total="38952.89"><td>30</td><td>TURNERS & GROWERS FRESH [NPF] CC#11342</td><td>$3,193</td><td>$3,202</td><td>$4,003</td><td>$3,202</td><td>$4,003</td><td>$3,202</td><td>$3,202</td><td>$5,368</td><td>$3,175</td><td>$3,202</td><td>$3,202</td><td><strong>$38,953</strong></td></tr>
+<tr data-total="34528.54"><td>31</td><td>TURNERS & GROWERS [PN] CC#11362</td><td>$2,476</td><td>$3,646</td><td>$3,610</td><td>$3,728</td><td>$3,500</td><td>$3,273</td><td>$3,055</td><td>$2,583</td><td>$2,828</td><td>$3,563</td><td>$2,267</td><td><strong>$34,529</strong></td></tr>
+<tr data-total="32729.0"><td>32</td><td>PAK N SAVE HAWERA</td><td>$2,820</td><td>$2,884</td><td>$2,676</td><td>$2,870</td><td>$2,787</td><td>$2,819</td><td>$2,796</td><td>$3,220</td><td>$3,232</td><td>$3,478</td><td>$3,145</td><td><strong>$32,729</strong></td></tr>
+<tr data-total="31195.04"><td>33</td><td>T&G Fresh Auckland</td><td>$2,583</td><td>$2,463</td><td>$2,542</td><td>$3,520</td><td>$2,858</td><td>$2,782</td><td>$3,270</td><td>$2,846</td><td>$2,630</td><td>$3,067</td><td>$2,634</td><td><strong>$31,195</strong></td></tr>
+<tr data-total="25516.22"><td>34</td><td>BIDFOOD FSV PALMERSTON NORTH</td><td>$2,310</td><td>$2,372</td><td>$2,310</td><td>$2,325</td><td>$2,341</td><td>$2,310</td><td>$2,310</td><td>$2,310</td><td>$2,310</td><td>$2,310</td><td>$2,310</td><td><strong>$25,516</strong></td></tr>
+<tr data-total="22052.62"><td>35</td><td>Fresh Direct Floral Limited</td><td>$2,119</td><td>$2,537</td><td>$1,447</td><td>$1,604</td><td>$1,645</td><td>$1,629</td><td>$1,973</td><td>$2,234</td><td>$2,423</td><td>$1,982</td><td>$2,458</td><td><strong>$22,053</strong></td></tr>
+<tr data-total="20271.83"><td>36</td><td>T Market Fresh Palmerston North</td><td>$1,680</td><td>$1,680</td><td>$1,680</td><td>$1,680</td><td>$1,680</td><td>$2,935</td><td>$1,680</td><td>$1,680</td><td>$1,680</td><td>$1,680</td><td>$2,217</td><td><strong>$20,272</strong></td></tr>
+<tr data-total="19090.52"><td>37</td><td>DAVE'S PATCH</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$1,540</td><td>$2,173</td><td>$1,182</td><td>$1,551</td><td>$1,215</td><td>$3,789</td><td>$7,641</td><td><strong>$19,091</strong></td></tr>
+<tr data-total="17919.68"><td>38</td><td>NZ Bulbs Limited</td><td>$686</td><td>$599</td><td>$2,322</td><td>$2,691</td><td>$2,199</td><td>$1,660</td><td>$1,441</td><td>$585</td><td>$1,658</td><td>$1,303</td><td>$2,777</td><td><strong>$17,920</strong></td></tr>
+<tr data-total="16087.2"><td>39</td><td>WOODHAVEN GARDENS LTD</td><td>$5,002</td><td>$3,142</td><td>$3,166</td><td>$2,313</td><td>$2,465</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$16,087</strong></td></tr>
+<tr data-total="15047.25"><td>40</td><td>Waikawa Fresh</td><td>$1,469</td><td>$1,476</td><td>$869</td><td>$2,130</td><td>$2,033</td><td>$972</td><td>$778</td><td>$486</td><td>$1,601</td><td>$1,465</td><td>$1,767</td><td><strong>$15,047</strong></td></tr>
+<tr data-total="13113.85"><td>41</td><td>TUI CREEK AG LTD</td><td>$1,801</td><td>$6,786</td><td>$426</td><td>$1,166</td><td>$440</td><td>$253</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$69</td><td>$1,626</td><td>$547</td><td><strong>$13,114</strong></td></tr>
+<tr data-total="12650.25"><td>42</td><td>BIDFOOD FSV NEW PLYMOUTH</td><td>$1,095</td><td>$1,030</td><td>$882</td><td>$1,270</td><td>$1,013</td><td>$1,347</td><td>$1,172</td><td>$1,042</td><td>$1,256</td><td>$1,266</td><td>$1,278</td><td><strong>$12,650</strong></td></tr>
+<tr data-total="12579.69"><td>43</td><td>Work & Grow Ltd T/A LITTLE KNOLL GREENHOUSES LTD</td><td>$1,133</td><td>$2,364</td><td>$1,036</td><td>$1,668</td><td>$1,796</td><td>$780</td><td>$1,376</td><td>$1,400</td><td>$450</td><td style="color:#475569">-</td><td>$575</td><td><strong>$12,580</strong></td></tr>
+<tr data-total="12185.34"><td>44</td><td>MG MARKETING LTD (WGTN)</td><td>$4,064</td><td>$3,111</td><td>$2,714</td><td>$2,129</td><td>$167</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$12,185</strong></td></tr>
+<tr data-total="11665.26"><td>45</td><td>Bs Young</td><td style="color:#475569">-</td><td>$340</td><td>$2,269</td><td>$1,738</td><td>$1,352</td><td>$1,167</td><td>$1,167</td><td>$146</td><td>$441</td><td>$945</td><td>$2,100</td><td><strong>$11,665</strong></td></tr>
+<tr data-total="10155.07"><td>46</td><td>Feilding Flowers LTD</td><td>$2,068</td><td>$1,869</td><td>$254</td><td>$408</td><td>$1,070</td><td>$1,317</td><td>$454</td><td>$42</td><td>$159</td><td>$1,157</td><td>$1,356</td><td><strong>$10,155</strong></td></tr>
+<tr data-total="10000.0"><td>47</td><td>PENSKE NEW ZEALAND T/A PENSKE NEW ZEALAND TAURANGA</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$10,000</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$10,000</strong></td></tr>
+<tr data-total="9283.45"><td>48</td><td>MG MARKETING - BANANA A/C</td><td>$1,523</td><td>$1,154</td><td>$1,119</td><td>$1,054</td><td>$1,073</td><td>$1,438</td><td>$1,922</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$9,283</strong></td></tr>
+<tr data-total="9154.02"><td>49</td><td>KAM Transport Ltd</td><td>$931</td><td>$452</td><td>$41</td><td>$41</td><td style="color:#475569">-</td><td>$411</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$2,815</td><td>$1,799</td><td>$2,664</td><td><strong>$9,154</strong></td></tr>
+<tr data-total="8085.7"><td>50</td><td>Greenway Farm</td><td>$798</td><td>$1,380</td><td>$1,613</td><td>$2,951</td><td>$176</td><td>$503</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$28</td><td>$331</td><td>$305</td><td><strong>$8,086</strong></td></tr>
+<tr data-total="6170.09"><td>51</td><td>DANIEL GEUZE (D&J)</td><td>$1,136</td><td>$1,594</td><td>$1,409</td><td style="color:#475569">-</td><td>$981</td><td>$611</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$120</td><td>$320</td><td><strong>$6,170</strong></td></tr>
+<tr data-total="6048.4"><td>52</td><td>Wonky Ltd</td><td>$691</td><td>$772</td><td>$994</td><td>$795</td><td>$994</td><td>$801</td><td style="color:#475569">-</td><td>$1,001</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$6,048</strong></td></tr>
+<tr data-total="4896.38"><td>53</td><td>Move Freight Limited</td><td>$1,369</td><td>$1,033</td><td>$797</td><td>$1,086</td><td>$396</td><td>$215</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$4,896</strong></td></tr>
+<tr data-total="4838.51"><td>54</td><td>SHIRES FRUIT & VEGE MARKET</td><td>$441</td><td>$328</td><td>$284</td><td>$394</td><td>$454</td><td>$393</td><td>$312</td><td>$316</td><td>$425</td><td>$736</td><td>$754</td><td><strong>$4,839</strong></td></tr>
+<tr data-total="4189.5"><td>55</td><td>STRATFORD NEW WORLD</td><td>$603</td><td>$904</td><td>$648</td><td>$800</td><td>$761</td><td>$474</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$4,190</strong></td></tr>
+<tr data-total="3117.62"><td>56</td><td>Mainfreight Limited</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$451</td><td>$1,045</td><td>$1,622</td><td><strong>$3,118</strong></td></tr>
+<tr data-total="2998.5"><td>57</td><td>Harmony International Limited (BELLBLOCK SUPERVALUE)</td><td>$562</td><td>$244</td><td>$290</td><td>$218</td><td>$241</td><td>$248</td><td>$245</td><td>$244</td><td>$175</td><td>$358</td><td>$172</td><td><strong>$2,998</strong></td></tr>
+<tr data-total="2980.49"><td>58</td><td>Fresh Choice Greytown</td><td>$635</td><td>$772</td><td>$581</td><td>$868</td><td>$124</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$2,980</strong></td></tr>
+<tr data-total="2487.55"><td>59</td><td>Shangri-La Flora</td><td>$13</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$262</td><td>$169</td><td>$1,188</td><td>$855</td><td><strong>$2,488</strong></td></tr>
+<tr data-total="2482.2"><td>60</td><td>Pagro Ltd</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$92</td><td>$553</td><td>$739</td><td>$1,098</td><td><strong>$2,482</strong></td></tr>
+<tr data-total="1955.33"><td>61</td><td>Gareth Redloh</td><td>$181</td><td>$559</td><td>$60</td><td>$119</td><td>$60</td><td>$180</td><td>$60</td><td>$360</td><td>$121</td><td>$125</td><td>$130</td><td><strong>$1,955</strong></td></tr>
+<tr data-total="1934.38"><td>62</td><td>FRANK BRISTOL</td><td>$971</td><td>$964</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$1,934</strong></td></tr>
+<tr data-total="1811.56"><td>63</td><td>AWAPUNI 4 SQUARE</td><td>$60</td><td>$90</td><td>$149</td><td>$216</td><td>$119</td><td>$180</td><td>$150</td><td>$120</td><td>$242</td><td>$257</td><td>$227</td><td><strong>$1,812</strong></td></tr>
+<tr data-total="1809.49"><td>64</td><td>GAZZAS FARM</td><td>$585</td><td>$1,188</td><td>$37</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$1,809</strong></td></tr>
+<tr data-total="1749.5"><td>65</td><td>SUPERVALUE WANGANUI</td><td>$179</td><td>$154</td><td>$166</td><td>$148</td><td>$140</td><td>$148</td><td>$118</td><td>$178</td><td>$150</td><td>$202</td><td>$166</td><td><strong>$1,750</strong></td></tr>
+<tr data-total="1592.0"><td>66</td><td>Plenty Foods Corp Nz Limited</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$600</td><td>$160</td><td>$320</td><td>$296</td><td>$216</td><td><strong>$1,592</strong></td></tr>
+<tr data-total="1548.89"><td>67</td><td>Turners & Growers Fresh Limited (1017193) Supplier Acct</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$1,549</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$1,549</strong></td></tr>
+<tr data-total="1402.56"><td>68</td><td>FLOWKING LTD</td><td>$1,226</td><td>$135</td><td>$41</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$1,403</strong></td></tr>
+<tr data-total="1311.45"><td>69</td><td>Fresh Choice Featherston</td><td style="color:#475569">-</td><td>$402</td><td>$406</td><td>$358</td><td>$146</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$1,311</strong></td></tr>
+<tr data-total="1257.83"><td>70</td><td>ORCHARD DIRECT LTD</td><td>$167</td><td>$166</td><td>$82</td><td>$165</td><td>$82</td><td>$83</td><td>$166</td><td>$83</td><td>$84</td><td>$90</td><td>$90</td><td><strong>$1,258</strong></td></tr>
+<tr data-total="1154.11"><td>71</td><td>GREVILLIA AG NZ LTD</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$103</td><td>$411</td><td>$362</td><td>$222</td><td>$56</td><td><strong>$1,154</strong></td></tr>
+<tr data-total="927.34"><td>72</td><td>SW FARM</td><td>$132</td><td>$29</td><td>$43</td><td>$87</td><td>$110</td><td>$102</td><td>$58</td><td>$58</td><td>$29</td><td>$123</td><td>$157</td><td><strong>$927</strong></td></tr>
+<tr data-total="873.78"><td>73</td><td>FAB ROSES</td><td>$118</td><td>$28</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$270</td><td>$105</td><td>$204</td><td>$149</td><td><strong>$874</strong></td></tr>
+<tr data-total="818.19"><td>74</td><td>Somerset Farms 2020 Ltd</td><td>$770</td><td>$48</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$818</strong></td></tr>
+<tr data-total="804.12"><td>75</td><td>CHONG JOE - Flowers</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$27</td><td>$351</td><td>$426</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$804</strong></td></tr>
+<tr data-total="796.19"><td>76</td><td>Vegeland Napier</td><td style="color:#475569">-</td><td>$76</td><td>$61</td><td>$36</td><td>$36</td><td>$231</td><td>$295</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$62</td><td style="color:#475569">-</td><td><strong>$796</strong></td></tr>
+<tr data-total="726.17"><td>77</td><td>Kahu Glen</td><td>$606</td><td>$120</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$726</strong></td></tr>
+<tr data-total="690.9"><td>78</td><td>PEL Group</td><td>$181</td><td>$180</td><td>$60</td><td>$89</td><td style="color:#475569">-</td><td>$90</td><td>$90</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$691</strong></td></tr>
+<tr data-total="649.81"><td>79</td><td>Maie Bloom</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$13</td><td>$14</td><td>$97</td><td>$205</td><td>$321</td><td style="color:#475569">-</td><td><strong>$650</strong></td></tr>
+<tr data-total="648.0"><td>80</td><td>DOWN TO EARTH</td><td>$80</td><td>$64</td><td>$56</td><td>$49</td><td>$52</td><td>$79</td><td>$19</td><td>$41</td><td>$60</td><td>$96</td><td>$52</td><td><strong>$648</strong></td></tr>
+<tr data-total="598.74"><td>81</td><td>FEATHERSTON SUPER VALUE</td><td>$599</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$599</strong></td></tr>
+<tr data-total="590.61"><td>82</td><td>PAIN & KERSHAW MITRE 10LTD</td><td>$272</td><td style="color:#475569">-</td><td>$217</td><td>$102</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$591</strong></td></tr>
+<tr data-total="506.0"><td>83</td><td>DAVE HOSKIN CARRIERS LTD</td><td>$46</td><td>$46</td><td>$46</td><td>$46</td><td>$46</td><td>$46</td><td>$46</td><td>$46</td><td>$46</td><td>$46</td><td>$46</td><td><strong>$506</strong></td></tr>
+<tr data-total="503.92"><td>84</td><td>WILD CHEF</td><td style="color:#475569">-</td><td>$84</td><td>$84</td><td>$42</td><td>$42</td><td>$84</td><td style="color:#475569">-</td><td>$84</td><td>$85</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$504</strong></td></tr>
+<tr data-total="493.05"><td>85</td><td>Mainfreight LCL</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$265</td><td>$228</td><td style="color:#475569">-</td><td><strong>$493</strong></td></tr>
+<tr data-total="474.28"><td>86</td><td>Wildfern Wines</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$315</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$159</td><td style="color:#475569">-</td><td><strong>$474</strong></td></tr>
+<tr data-total="409.7"><td>87</td><td>Moores Cut Flowers</td><td>$91</td><td>$21</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$194</td><td>$105</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$410</strong></td></tr>
+<tr data-total="384.75"><td>88</td><td>A&W YUNG</td><td style="color:#475569">-</td><td>$69</td><td>$41</td><td>$41</td><td>$96</td><td>$28</td><td>$110</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$385</strong></td></tr>
+<tr data-total="376.62"><td>89</td><td>Pohangina Proteas</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$14</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$279</td><td>$84</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$377</strong></td></tr>
+<tr data-total="321.46"><td>90</td><td>UFG Auckland</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$321</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$321</strong></td></tr>
+<tr data-total="321.45"><td>91</td><td>HUNTERS 2000 LTD</td><td>$215</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$106</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$321</strong></td></tr>
+<tr data-total="308.46"><td>92</td><td>Waipukurau New World - 4280</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$308</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$308</strong></td></tr>
+<tr data-total="300.0"><td>93</td><td>Supersave Naenae</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$300</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$300</strong></td></tr>
+<tr data-total="260.0"><td>94</td><td>TURNERS & GROWERS FRESH [NP]</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$164</td><td>$96</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$260</strong></td></tr>
+<tr data-total="257.05"><td>95</td><td>Waipukurau New World - 411801</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$257</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$257</strong></td></tr>
+<tr data-total="244.34"><td>96</td><td>MELA JUICE</td><td>$204</td><td>$40</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$244</strong></td></tr>
+<tr data-total="241.7"><td>97</td><td>GARDEN COTTAGE FLOWERS</td><td>$35</td><td>$48</td><td>$48</td><td style="color:#475569">-</td><td>$62</td><td>$48</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$242</strong></td></tr>
+<tr data-total="238.89"><td>98</td><td>TOWER GATES 1980 LTD</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$86</td><td style="color:#475569">-</td><td>$153</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$239</strong></td></tr>
+<tr data-total="180.76"><td>99</td><td>Fresh Direct - Wellington</td><td>$55</td><td>$50</td><td>$75</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$181</strong></td></tr>
+<tr data-total="137.28"><td>100</td><td>LY Farm Ltd</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$137</td><td><strong>$137</strong></td></tr>
+<tr data-total="102.78"><td>101</td><td>Four Square Martinborough</td><td style="color:#475569">-</td><td>$103</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$103</strong></td></tr>
+<tr data-total="100.1"><td>102</td><td>Longlands Fruit and Vege</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$100</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$100</strong></td></tr>
+<tr data-total="97.27"><td>103</td><td>John Duggan C/- TG Wellington</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$97</td><td style="color:#475569">-</td><td><strong>$97</strong></td></tr>
+<tr data-total="79.67"><td>104</td><td>Ataahua Blooms</td><td style="color:#475569">-</td><td>$27</td><td>$53</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$80</strong></td></tr>
+<tr data-total="63.51"><td>105</td><td>WILDCHEF</td><td>$64</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$64</strong></td></tr>
+<tr data-total="46.37"><td>106</td><td>KIM YOUNG and SONS Ltd</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$46</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$46</strong></td></tr>
+<tr data-total="40.52"><td>107</td><td>Wildly Gathered</td><td style="color:#475569">-</td><td>$41</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$41</strong></td></tr>
+<tr data-total="40.3"><td>108</td><td>J ALTENBURG</td><td>$40</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$40</strong></td></tr>
+<tr data-total="0.0"><td>109</td><td>Turners and Growers Wellington CC#11382</td><td>$70</td><td class="neg">$-70</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td><strong>$0</strong></td></tr>
+<tr data-total="0.0"><td>110</td><td>REID FAMILY ENTERPRISES LTD</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td>$520</td><td class="neg">$-520</td><td style="color:#475569">-</td><td><strong>$0</strong></td></tr>
+<tr data-total="-0.78"><td>111</td><td>Nigel Cooper</td><td style="color:#475569">-</td><td class="neg">$-1</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td style="color:#475569">-</td><td class="neg"><strong>$-1</strong></td></tr>
+</tbody>
+<tfoot><tr><td></td><td>TOTAL</td><td>$432,002</td><td>$466,745</td><td>$431,551</td><td>$474,942</td><td>$456,555</td><td>$447,631</td><td>$443,395</td><td>$409,846</td><td>$417,162</td><td>$412,654</td><td>$412,281</td><td>$4,804,763</td></tr></tfoot>
+</table></div>
+
+<script>
+function formatMoney(n) {
+  return n.toLocaleString('en-NZ', {minimumFractionDigits:0, maximumFractionDigits:0});
+}
+
+
+
+function filterTable() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const min = parseFloat(document.getElementById('minRev').value);
+  const rows = document.querySelectorAll('#revTable tbody tr');
+  let vis = 0;
+  rows.forEach(r => {
+    const name = r.children[1].textContent.toLowerCase();
+    const total = parseFloat(r.dataset.total);
+    const show = name.includes(q) && total >= min;
+    r.classList.toggle('hidden', !show);
+    if (show) vis++;
+  });
+}
+
+function exportCSV() {
+  const rows = document.querySelectorAll('#revTable thead tr, #revTable tbody tr:not(.hidden), #revTable tfoot tr');
+  let csv = '';
+  rows.forEach(r => {
+    const cells = [...r.querySelectorAll('th,td')].map(c => '"' + c.textContent.replace(/"/g,'""') + '"');
+    csv += cells.join(',') + '\n';
+  });
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'urgent_cool_revenue_apr25_feb26.csv';
+  a.click();
+}
+
+filterTable();
+</script>
+</body></html>
