@@ -53,6 +53,7 @@ tr.gf-yes:hover td{background:rgba(6,95,70,0.25)}
 
 <div style="display:flex;gap:8px;margin-bottom:16px">
 <button class="tab-btn active" onclick="showTab('revenue')" id="tab-revenue" style="background:#3b82f6;color:#fff;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600">📊 Revenue</button>
+<button class="tab-btn" onclick="showTab('wages')" id="tab-wages" style="background:#334155;color:#e2e8f0;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600">💰 Wages</button>
 <button class="tab-btn" onclick="showTab('fleet')" id="tab-fleet" style="background:#334155;color:#e2e8f0;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600">🚛 Fleet</button>
 </div>
 <div id="revenue-section"><div class="kpi-row">
@@ -191,6 +192,32 @@ tr.gf-yes:hover td{background:rgba(6,95,70,0.25)}
 </table></div>
 
 </div>
+
+<div id="wages-section" style="display:none">
+<div class="kpi-row">
+<div class="kpi"><div class="label">Total Employment Costs (12mo)</div><div class="value green">$2,381,685</div></div>
+<div class="kpi"><div class="label">Avg Monthly</div><div class="value green">$198,473</div></div>
+<div class="kpi"><div class="label">Driver Wages (Gross)</div><div class="value">$1,874,139</div></div>
+<div class="kpi"><div class="label">Admin/Mgmt Wages</div><div class="value">$431,428</div></div>
+<div class="kpi"><div class="label">ACC + Other</div><div class="value">$76,118</div></div>
+</div>
+
+<div class="note">📊 Source: Xero P&L — Driver + admin/management wages, ACC, contractors, staff costs. All figures ex-GST, gross wages before PAYE/KiwiSaver deductions.</div>
+
+<h2 style="color:#fff;font-size:16px;margin:20px 0 10px">Monthly Employment Costs</h2>
+<div class="table-wrap"><table>
+<thead><tr><th style="text-align:left">Item</th><th>Apr 25</th><th>May 25</th><th>Jun 25</th><th>Jul 25</th><th>Aug 25</th><th>Sep 25</th><th>Oct 25</th><th>Nov 25</th><th>Dec 25</th><th>Jan 26</th><th>Feb 26</th><th>Mar 26</th><th>TOTAL</th></tr></thead>
+<tbody><tr><td style="text-align:left;color:#fff;font-weight:500">Wages - Drivers (Gross)</td><td>$187,422</td><td>$165,521</td><td>$190,389</td><td>$178,092</td><td>$167,591</td><td>$160,697</td><td>$164,665</td><td>$129,073</td><td>$126,467</td><td>$157,590</td><td>$127,527</td><td>$119,106</td><td><strong>$1,874,139</strong></td></tr>
+<tr><td style="text-align:left;color:#fff;font-weight:500">Wages/Salaries (Gross) - Administration/Management</td><td>$39,077</td><td>$34,816</td><td>$38,587</td><td>$33,147</td><td>$31,715</td><td>$31,454</td><td>$46,995</td><td>$30,575</td><td>$35,047</td><td>$46,085</td><td>$34,982</td><td>$28,949</td><td><strong>$431,428</strong></td></tr>
+<tr><td style="text-align:left;color:#fff;font-weight:500">ACC Levies</td><td>$0</td><td>$0</td><td>$0</td><td>$0</td><td>$9,889</td><td>$9,889</td><td>$9,889</td><td>$9,889</td><td>$0</td><td>$9,889</td><td>$9,890</td><td>$0</td><td><strong>$59,337</strong></td></tr>
+<tr><td style="text-align:left;color:#fff;font-weight:500">Contractors (Support for Accounts and Payroll)</td><td>$852</td><td>$860</td><td>$834</td><td>$1,109</td><td>$760</td><td>$1,067</td><td>$857</td><td>$688</td><td>$923</td><td>$728</td><td>$730</td><td>$899</td><td><strong>$10,307</strong></td></tr>
+<tr><td style="text-align:left;color:#fff;font-weight:500">Staff Cafeteria Costs (Smoko Cost)</td><td>$367</td><td>$295</td><td>$125</td><td>$225</td><td>$680</td><td>$49</td><td>$140</td><td>$247</td><td>$294</td><td>$659</td><td>$43</td><td>$132</td><td><strong>$3,257</strong></td></tr>
+<tr><td style="text-align:left;color:#fff;font-weight:500">Staff Expenses (training/re-certifications)</td><td>$1,812</td><td>$0</td><td>$212</td><td>$0</td><td>$356</td><td>$0</td><td>$89</td><td>$0</td><td>$659</td><td>$0</td><td>$89</td><td>$0</td><td><strong>$3,218</strong></td></tr>
+</tbody>
+<tfoot><tr><td style="text-align:left"><strong>TOTAL</strong></td><td>$229,530</td><td>$201,491</td><td>$230,148</td><td>$212,573</td><td>$210,991</td><td>$203,157</td><td>$222,636</td><td>$170,473</td><td>$163,390</td><td>$214,951</td><td>$173,260</td><td>$149,086</td><td><strong>$2,381,685</strong></td></tr></tfoot>
+</table></div>
+</div>
+
 <div id="fleet-section" style="display:none">
 <div class="kpi-row">
 <div class="kpi"><div class="label">Total Fleet Book Value</div><div class="value green">$2,179,032</div></div>
@@ -347,10 +374,12 @@ tr.gf-yes:hover td{background:rgba(6,95,70,0.25)}
 <script>
 
 function showTab(tab) {
-  document.getElementById('revenue-section').style.display = tab === 'revenue' ? 'block' : 'none';
-  document.getElementById('fleet-section').style.display = tab === 'fleet' ? 'block' : 'none';
-  document.getElementById('tab-revenue').style.background = tab === 'revenue' ? '#3b82f6' : '#334155';
-  document.getElementById('tab-fleet').style.background = tab === 'fleet' ? '#3b82f6' : '#334155';
+  ['revenue','wages','fleet'].forEach(function(t) {
+    var el = document.getElementById(t + '-section');
+    if (el) el.style.display = tab === t ? 'block' : 'none';
+    var btn = document.getElementById('tab-' + t);
+    if (btn) btn.style.background = tab === t ? '#3b82f6' : '#334155';
+  });
 }
 
 let flagsOnly = false;
